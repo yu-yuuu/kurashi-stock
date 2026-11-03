@@ -1,7 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 
-// Measure actual rows and reveal half of the sixth item as a scrolling cue.
-export default function ScrollList({ label, children }: { label: string; children: ReactNode }) {
+// Measure actual rows and reveal half of the following item as a scrolling cue.
+export default function ScrollList({ label, children, visibleRows = 5 }: { label: string; children: ReactNode; visibleRows?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const helpId = useId()
   const [height, setHeight] = useState<number>()
@@ -11,17 +11,17 @@ export default function ScrollList({ label, children }: { label: string; childre
     if (!list) return
     const measure = () => {
       const rows = Array.from(list.children) as HTMLElement[]
-      const sixth = rows[5]?.getBoundingClientRect()
-      setHeight(sixth
-        ? Math.ceil(sixth.top + sixth.height / 2 - list.getBoundingClientRect().top)
+      const partial = rows[visibleRows]?.getBoundingClientRect()
+      setHeight(partial
+        ? Math.ceil(partial.top + partial.height / 2 - list.getBoundingClientRect().top)
         : undefined)
     }
     measure()
     const observer = new ResizeObserver(measure)
     observer.observe(list)
-    Array.from(list.children).slice(0, 6).forEach((row) => observer.observe(row))
+    Array.from(list.children).slice(0, visibleRows + 1).forEach((row) => observer.observe(row))
     return () => observer.disconnect()
-  }, [children])
+  }, [children, visibleRows])
   return (
     <>
       <div ref={ref} className="scroll-list" style={{ maxHeight: height }}
