@@ -36,6 +36,7 @@
 !/src/platform/analytics.ts
 !/src/platform/files.ts
 !/src/platform/pwa.ts
+!/src/platform/storage.ts
 !/src/platform/uuid.ts
 !/src/styles.css
 !/src/ui/AnalyticsSettings.tsx
