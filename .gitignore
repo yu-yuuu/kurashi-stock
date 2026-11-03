@@ -61,6 +61,20 @@
 !/vite.config.ts
 
 # Never publish credentials, exports, logs, or local archives.
+# Keep private workspace folders excluded even if directory allowlists are expanded.
+/doc/
+/.local-private/
+/.codex/
+/.agents/
+/.aws/
+/tests/
+/e2e/
+/test-results/
+/playwright-report/
+/dist/
+/node_modules/
+/AGENTS.md
+/README.md
 *.pem
 *.key
 *.p12
