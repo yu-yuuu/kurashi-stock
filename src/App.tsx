@@ -38,6 +38,11 @@ export default function App() {
       </a>
       <header className="site-header">
         <div className="header-inner">
+          <div className="header-title">
+            <p className="eyebrow">A LITTLE MORE ORGANIZED</p>
+            {route.page === 'list' ? <h1>おうちの在庫</h1> : <strong>おうちの在庫</strong>}
+            <p className="muted">家にあるものを、ひと目で。</p>
+          </div>
           <button
             className="icon-button menu-trigger"
             aria-label="メニューを開く"
@@ -158,17 +163,10 @@ function ProductList({ products, tags, lots }: { products: ProductSummary[]; tag
   const filtered = filterProducts(products, search, validSelected, tagMode)
   return (
     <section>
-      <div className="page-heading">
-        <div>
-          <p className="eyebrow">A LITTLE MORE ORGANIZED</p>
-          <h1>おうちの在庫</h1>
-          <p className="muted">家にあるものを、ひと目で。</p>
-        </div>
         <button className="button primary add-product" onClick={() => navigate('/new')}>
           <Icon name="plus" />
           商品を登録
         </button>
-      </div>
       <ExpiringStock products={products} lots={lots} />
       <div className="search-area">
         <label className="search-box">
