@@ -5,6 +5,7 @@ import type { InventoryData } from '../domain/models'
 import { errorMessage } from '../domain/validation'
 import { parseRoute } from './routing'
 import { today } from './format'
+import { protectInventoryStorage } from '../platform/storage'
 
 export function useToday() {
   const [date, setDate] = useState(today)
@@ -34,15 +35,35 @@ export function useToday() {
 export function useInventory() {
   const [data, setData] = useState<InventoryData>()
   const [error, setError] = useState('')
+  const protectionRequested = useRef(false)
   useEffect(() => {
-    const subscription = liveQuery(() => inventory.read()).subscribe({
-      next: (value) => {
-        setData(value)
-        setError('')
-      },
-      error: (reason) => setError(errorMessage(reason)),
-    })
-    return () => subscription.unsubscribe()
+    const query = liveQuery(() => inventory.read())
+    let subscription: ReturnType<typeof query.subscribe> | undefined
+    function refresh() {
+      subscription?.unsubscribe()
+      subscription = query.subscribe({
+        next: (value) => {
+          setData(value)
+          setError('')
+          if (!protectionRequested.current && (value.products.length || value.tags.length)) {
+            protectionRequested.current = true
+            void protectInventoryStorage()
+          }
+        },
+        error: (reason) => setError(errorMessage(reason)),
+      })
+    }
+    const resume = () => { if (!document.hidden) refresh() }
+    refresh()
+    window.addEventListener('focus', resume)
+    window.addEventListener('pageshow', resume)
+    document.addEventListener('visibilitychange', resume)
+    return () => {
+      subscription?.unsubscribe()
+      window.removeEventListener('focus', resume)
+      window.removeEventListener('pageshow', resume)
+      document.removeEventListener('visibilitychange', resume)
+    }
   }, [])
   return { data, error }
 }

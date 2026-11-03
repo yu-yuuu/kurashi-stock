@@ -58,7 +58,7 @@ export default function ExpiringStock({
           <p>7日以内・期限切れを、期限が近い順に表示</p>
         </div>
       </div>
-      <ScrollList label="期限注意の一覧">
+      <ScrollList label="期限注意の一覧" visibleRows={2}>
         <ul className="expiring-list">{expiring.map(row)}</ul>
       </ScrollList>
     </section>

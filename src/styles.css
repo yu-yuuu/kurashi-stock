@@ -1280,7 +1280,11 @@ svg {
   box-shadow: 0 5px 18px #183b3330;
 }
 
-.header-inner { justify-content: flex-end; padding-top: 6px; padding-bottom: 6px; }
+.header-inner { gap: 12px; padding-top: 6px; padding-bottom: 6px; }
+.header-title { min-width: 0; margin-right: auto; }
+.header-title h1, .header-title strong { display: block; font-size: 18px; line-height: 1.4; }
+.header-title .eyebrow { font-size: 8px; letter-spacing: .1em; margin: 0; }
+.header-title .muted { font-size: 10px; line-height: 1.5; }
 :root { scroll-padding-top: calc(76px + env(safe-area-inset-top)); }
 
 .history-edit { flex-shrink: 0; }
