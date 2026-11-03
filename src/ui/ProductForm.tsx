@@ -78,6 +78,13 @@ export default function ProductForm({
       navigate(`/products/${product.id}`)
     })
   }
+  const backToList = () => {
+    if (!product) return navigate('/')
+    void action.run(async () => {
+      await saveEdit(true)
+      navigate('/')
+    })
+  }
   function addAlias() {
     try {
       setAliases(cleanAliases([...aliases, aliasDraft]))
@@ -127,10 +134,14 @@ export default function ProductForm({
   }
   return (
     <section className="form-page">
-      <button className="back-link" disabled={action.busy} onClick={cancel}>
+      <button className="button secondary detail-back" disabled={action.busy || composing} onClick={backToList}>
         <Icon name="back" size={18} />
-        {product ? '商品詳細に戻る' : '在庫一覧に戻る'}
+        在庫一覧に戻る
       </button>
+      {product && <button className="back-link" disabled={action.busy || composing} onClick={cancel}>
+        <Icon name="back" size={18} />
+        商品詳細に戻る
+      </button>}
       <div className="page-heading">
         <div>
           <p className="eyebrow">{product ? 'EDIT ITEM' : 'NEW ITEM'}</p>
@@ -254,7 +265,7 @@ export default function ProductForm({
           )}
           <div className="form-actions">
             {product ? (
-              <span className="field-help">画面上部の「商品詳細に戻る」から戻れます。</span>
+              <span className="field-help">変更は自動保存します。「在庫一覧に戻る」から一覧へ戻れます。</span>
             ) : (<>
               <button type="button" className="button secondary" onClick={cancel}>キャンセル</button>
               <button className="button primary" type="submit">{action.busy ? '保存中…' : '商品を登録'}</button>
