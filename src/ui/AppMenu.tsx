@@ -152,19 +152,8 @@ export default function AppMenu({
           </>
         ) : (
           <>
-            <div className="backup-guidance">
-              <p>在庫はこの端末に自動保存されます。</p>
-              <button
-                ref={backupEntry}
-                type="button"
-                className="button secondary w-full"
-                onClick={() => setBackupOpen(true)}
-                disabled={action.busy}
-              >
-                バックアップ連携する
-              </button>
-            </div>
             <p className="menu-section-label">データの管理</p>
+            <p className="field-help">在庫データはこの端末に自動保存されます。</p>
             <div className="menu-options">
               <button className="menu-option" onClick={onManageTags} disabled={action.busy}>
                 <Icon name="tag" />
@@ -175,6 +164,18 @@ export default function AppMenu({
               </button>
             </div>
             <PwaTools />
+            <div className="backup-guidance">
+              <p>在庫データをファイルに保存したり、保存したファイルから復元したりできます。</p>
+              <button
+                ref={backupEntry}
+                type="button"
+                className="button secondary w-full"
+                onClick={() => setBackupOpen(true)}
+                disabled={action.busy}
+              >
+                バックアップ連携する
+              </button>
+            </div>
           </>
         )}
         <input
