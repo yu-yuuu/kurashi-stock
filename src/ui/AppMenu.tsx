@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type ComponentProps } from 'react'
-import { appConfig } from '../config'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import {
   exportBackup,
   MAX_BACKUP_BYTES,
@@ -15,7 +14,6 @@ import { useAction } from './hooks'
 import Icon from './Icon'
 import Dialog from './Dialog'
 import PwaTools from './PwaTools'
-import AnalyticsSettings from './AnalyticsSettings'
 export default function AppMenu({
   onClose,
   onNotice,
@@ -113,15 +111,6 @@ export default function AppMenu({
           </div>
         ) : backupOpen ? (
           <>
-            <div className="backup-guidance">
-              <h3>バックアップ方法を選んでください</h3>
-              <p>
-                現在はJSONファイルの保存・復元が利用できます。アカウント連携・自動同期には対応していません。
-              </p>
-              <p>
-                バックアップは任意です。保存したファイルは、端末内や普段お使いのクラウドストレージなどに保管してください。
-              </p>
-            </div>
             <div className="menu-options">
               <button
                 ref={backupSave}
@@ -164,9 +153,7 @@ export default function AppMenu({
         ) : (
           <>
             <div className="backup-guidance">
-              <h3>この端末だけで使えます</h3>
-              <p>ログイン・同期は不要です。在庫データは端末内へ自動保存し、アプリから外部へ送信しません。</p>
-              <p>バックアップは任意です。端末の故障や紛失に備えたいときに保存できます。現在はJSONファイルの保存・復元に対応しています。</p>
+              <p>在庫はこの端末に自動保存されます。</p>
               <button
                 ref={backupEntry}
                 type="button"
@@ -187,13 +174,7 @@ export default function AppMenu({
                 <Icon name="arrow" size={15} />
               </button>
             </div>
-            <p className="menu-section-label mt-6">このアプリについて</p>
             <PwaTools />
-            <div className="menu-options">
-              <ExternalLink label="ご意見・改善提案" icon="message" url={appConfig.feedbackUrl} />
-              <ExternalLink label="プライバシーポリシー" icon="shield" url={appConfig.privacyUrl} />
-            </div>
-            <AnalyticsSettings />
           </>
         )}
         <input
@@ -235,34 +216,5 @@ export default function AppMenu({
         )}
       </div>
     </Dialog>
-  )
-}
-function ExternalLink({
-  label,
-  icon,
-  url,
-}: {
-  label: string
-  icon: ComponentProps<typeof Icon>['name']
-  url: string | null
-}) {
-  const content = (
-    <>
-      <Icon name={icon} />
-      <span>
-        {label}
-        <small>{url ? '外部サイトを開きます' : '準備中'}</small>
-      </span>
-      {url && <Icon name="arrow" size={15} />}
-    </>
-  )
-  return url ? (
-    <a className="menu-option" href={url} target="_blank" rel="noopener noreferrer">
-      {content}
-    </a>
-  ) : (
-    <button type="button" className="menu-option" disabled>
-      {content}
-    </button>
   )
 }
