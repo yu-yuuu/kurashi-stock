@@ -38,11 +38,6 @@ export default function App() {
       </a>
       <header className="site-header">
         <div className="header-inner">
-          <div className="header-title">
-            <p className="eyebrow">A LITTLE MORE ORGANIZED</p>
-            {route.page === 'list' ? <h1>おうちの在庫</h1> : <strong>おうちの在庫</strong>}
-            <p className="muted">家にあるものを、ひと目で。</p>
-          </div>
           <button
             className="icon-button menu-trigger"
             aria-label="メニューを開く"
@@ -223,9 +218,9 @@ function ProductList({ products, tags, lots }: { products: ProductSummary[]; tag
         )}
       </div>
       <div className="list-heading">
-        <h2>
+        <h1>
           在庫一覧 <span>{filtered.length} 件</span>
-        </h2>
+        </h1>
         <span>最終操作が新しい順</span>
       </div>
       {products.length === 0 ? (
